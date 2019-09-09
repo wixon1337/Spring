@@ -19,4 +19,8 @@ public class AppConfig {
     @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode =
             ScopedProxyMode.TARGET_CLASS )
     public MyMemoService memoService() { return new MyMemoService();}
+
+    @Bean
+    @Scope("singleton")
+    public ThingsService thingsService() { return new ThingsService();}
 }
