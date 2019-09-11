@@ -3,18 +3,24 @@ package hu.flowacademy.spring.first;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/api")
 public class RootResource {
+
+    @Autowired  
+    BasicRepository basicRepository;
 
     @Autowired
     private MyComponent myComponent;
 
     @GetMapping("/")
-    public String getRoot() {
+    public @ResponseBody String getRoot() {
         return "Hello world!";
     }
 
-    @GetMapping("/my-comp")
+/*    @GetMapping("/my-comp")
     public String getMyCompsData() {
         return myComponent.data;
     }
@@ -27,10 +33,26 @@ public class RootResource {
     @PutMapping("/echo-path/{pathvar}")
     public String getPathVariable(@PathVariable("pathvar") String pathVariable) {
         return pathVariable;
+    }*/
+
+    @PostMapping("/profile")
+    public Profile saveProfile(@RequestBody Profile profile) {
+        return basicRepository.save(profile);
     }
 
-    @PostMapping("/echo-json")
-    public Profile getProfile(@RequestBody Profile profile) {
-        return profile;
+    @GetMapping("/profiles")
+    public List<Profile> getAllProfiles() {
+        return basicRepository.findAll();
+    }
+
+    @GetMapping("/profile/{id}")
+    public Profile getProfile(@PathVariable("id") Long id) {
+        return basicRepository.getOne(id);
+    }
+
+    @DeleteMapping("/profile/{id}")
+    public void deleteProfile(@PathVariable("id") Long id) {
+        basicRepository.deleteById(id);
+
     }
 }
