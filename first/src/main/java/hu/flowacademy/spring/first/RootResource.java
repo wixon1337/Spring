@@ -9,8 +9,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class RootResource {
 
-    @Autowired  
+    @Autowired
     BasicRepository basicRepository;
+
+    @Autowired
+    BasicService basicService;
 
     @Autowired
     private MyComponent myComponent;
@@ -52,7 +55,23 @@ public class RootResource {
 
     @DeleteMapping("/profile/{id}")
     public void deleteProfile(@PathVariable("id") Long id) {
-        basicRepository.deleteById(id);
+        basicService.softDeleteById(id);
+    }
 
+    @PostMapping("/generate")
+    public List<Profile> generateRecords(@RequestParam("n") Long n) {
+        basicService.reset();
+        basicService.generate(n);
+        return basicRepository.findAll();
+    }
+
+    @GetMapping("/profile/adults")
+    public List<Profile> findAdults() {
+        return basicRepository.findByAgeGreaterThan(18);
+    }
+
+    @GetMapping("/profile/last_update")
+    public Profile findLastUpdated() {
+        return basicRepository.findLastUpdated();
     }
 }
