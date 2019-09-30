@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit {
     let ws = new SockJs(this.serverUrl);
     this.stompClient = Stomp.over(ws);
     let that = this;
-    this.stompClient.connect({}, function (frame) {
+    this.stompClient.connect({}, function () {
       that.isLoaded = true;
     })
   }
