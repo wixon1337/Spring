@@ -1,0 +1,5 @@
+var auth = SecurityContextHolder.getContext().getAuthentication();
+       if (auth != null && auth.getPrincipal() instanceof User) {
+            var user = (User) auth.getPrincipal();
+            user.getName()
+        }
